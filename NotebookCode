@@ -1,0 +1,30 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.cluster import KMeans
+from sklearn.preprocessing import StandardScaler
+
+# Load the Iris dataset
+data = pd.read_csv('C:\\Users\\Dhekra Hajji\\OneDrive - CXG\\Bureau\\iris.csv')
+
+# Extract the features
+features = data.iloc[:, 1:5].values
+
+# Standardize the features
+scaler = StandardScaler()
+scaled_features = scaler.fit_transform(features)
+
+# Determine the optimal number of clusters
+distortions = []
+K = range(1, 10)
+for k in K:
+    kmeans = KMeans(n_clusters=k)
+    kmeans.fit(scaled_features)
+    distortions.append(kmeans.inertia_)
+
+# Plot the elbow curve
+plt.plot(K, distortions, 'bx-')
+plt.xlabel('Number of Clusters (K)')
+plt.ylabel('Distortion')
+plt.title('Elbow Method to Determine Optimal K')
+plt.show()
